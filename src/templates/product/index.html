@@ -1,0 +1,71 @@
+{% extends './_extends_/layout.html' %}
+
+{% block title %} Productos {% endblock %}
+
+{% block header %} {% include './_includes_/header.html' %} {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <div class="card">
+        <div class="card-header">Registros</div>
+        
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Departamento</th>
+                        <th scope="col">Articulo</th>
+                        <th>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Limpiar
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{product.name}}</td>
+                            {% set price = '$ {:0,.2f}'.format(product.price) %}
+                            <td>{{price}}</td>
+                            <td>{{product.category.department}}</td>
+                            <td>{{product.category.article}}</td>
+                            <td>
+                                <a href="{{url_for('product.get_item', id=product.code)}}" class="btn btn-secondary">Leer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar todo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Quieres eliminar todos los documentos de la colecci&oacute;n?
+            </div>
+            <div class="modal-footer">
+                <a href="{{url_for('product.delete_list')}}" class="btn btn-primary">Aceptar</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Rechazar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}

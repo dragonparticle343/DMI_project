@@ -1,0 +1,141 @@
+{% extends './_extends_/layout.html' %}
+
+{% block title %} Insertar productos {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block header %}
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Dragonsoft</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <div class="card">
+        <form action="{{url_for('order.put_product', id=order.code)}}"  method="POST">
+            <div class="card-header bg-warning">
+                <h5 class="card-title text-white">Modificar registro</h5>
+            </div>
+
+            <div class="card-body bg-warning-subtle">
+
+                <div class="mb-3">
+                    <label for="product" class="form-label">Producto</label>
+                    <select class="form-select" aria-label="Default select example" id="product" name="product">
+                        <option selected>...</option>
+                        {% for product in products %}
+                            <option value="{{product.code}}">{{product.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="product" class="form-text">Selecciona la tienda donde se realiz&oacute; la venta</div>
+                </div>
+                <div class="mb-3">
+                    <label for="units" class="form-label">Unidades</label>
+                    <input type="number" class="form-control" id="units" name="units" step="1">
+                    <div id="units" class="form-text">Escribe numero de unidades a comprar</div>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <div class="btn-group" role="group">
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                    <button type="reset" class="btn btn-warning">Cancelar</button>
+                    <a href="{{url_for('order.update_pay_form', id=order.code)}}" class="btn btn-secondary">Siguiente</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Quieres eliminar este documento de la colecci&oacute;n?
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{{url_for('order.delete_item', id = order.code)}}" class="btn btn-primary">Aceptar</a>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Rechazar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="m-5">
+    <div class="card">
+        <div class="card-header">Productos</div>
+
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Total</th>
+                        <th scope="col">Unidades</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% set total = '$ {:0,.2f}'.format(order.total) %}
+                        <td>{{total}}</td>
+                        <td>{{order.quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        {% set id = order.code %}
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Unidades</th>
+                        <th scope="col">
+                            <a href="{{url_for('order.delete_all_product', id = id)}}" class="btn btn-danger">Limpiar</a>   
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in order.products %}
+                        <tr>
+                            {% set ed = product.code %}
+                            <td>{{product.name}}</td>
+                            {% set price = '$ {:0,.2f}'.format(product.price) %}
+                            <td>{{price}}</td>
+                            <td>{{product.units}}</td>
+                            <td>
+                                <a href="{{url_for('order.delete_one_product', id = id, ed = ed)}}" class="btn btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}
