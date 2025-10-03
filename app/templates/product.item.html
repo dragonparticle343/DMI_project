@@ -1,0 +1,77 @@
+{% import '_macros_/navbar.html' as nav %}
+{% import '_macros_/modal.html' as md %}
+
+{% extends '_extends_/layout.html' %}
+
+{% block title %} {{product.name}} {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block header %}
+
+{% set link = url_for('product.get_list') %}
+{{ nav.returnNav(link) }}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <div class="card">
+
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{product.name}}</div>
+                        Nombre
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        {% set price = '$ {:0,.2f}'.format(product.price) %}
+                        <div class="fw-bold">{{price}}</div>
+                        Precio
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{product.category.department}}</div>
+                        <div class="fw-bold">{{product.category.article}}</div>
+                        Categoria
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{product.description}}</div>
+                        Descripcion
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        {% for content in product.content %}
+                            <div class="fw-bold">{{content}}</div>
+                        {% endfor %}
+                        Contenido
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-footer">
+            <a href="{{url_for('product.update_form', id=product.code)}}" class="btn btn-warning">Editar</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Eliminar
+            </button>
+        </div>
+    </div>
+</div>
+
+{% set onclick = url_for('product.delete_item', id = product.code) %}
+{{ md.nvButton('Eliminar', '¿Quieres eliminar este producto?', onclick) }}
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}

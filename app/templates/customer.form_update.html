@@ -1,0 +1,103 @@
+{% import '_macros_/navbar.html' as nav %}
+{% import '_macros_/modal.html' as md %}
+
+{% extends '_extends_/layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block header %}
+
+{% set link = url_for('customer.get_item', id=customer.code) %}
+{{ nav.returnNav(link) }}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <div class="card">
+        <form action="{{url_for('customer.put_item', id=customer.code)}}" method="POST">
+            <div class="card-header bg-warning">
+                <h5 class="card-title text-white">Modificar registro</h5>
+            </div>
+
+            <div class="card-body bg-warning-subtle">
+
+                <h5 class="card-title mb-3 text-center">Datos principales</h5>
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{customer.name}}">
+                    <div id="name" class="form-text">Escribe el primer y segundo nombre</div>
+                </div>
+                <div class="mb-3">
+                    <label for="surname" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="surname" name="surname" value="{{customer.surname}}">
+                    <div id="surname" class="form-text">Escribe el apellido paterno y materno</div>
+                </div>
+                <div class="mb-3">
+                    <label for="birth" class="form-label">Nacimiento</label>
+                    <input type="date" class="form-control" id="birth" name="birth" value="{{customer.birth}}">
+                    <div id="birth" class="form-text">Escribe la fecha de nacimiento</div>
+                </div>
+                <div class="mb-3">
+                    <label for="sex" class="form-label">Sexo</label>
+                    {% if customer.sex == "M" %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" id="sex" value="{{customer.sex}}" checked>
+                            <label class="form-check-label" for="sex">Masculino</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" id="sex" value="F">
+                            <label class="form-check-label" for="sex">Femenino</label>
+                        </div>
+                    {% else %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" id="sex" value="M">
+                            <label class="form-check-label" for="sex">Masculino</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" id="sex" value="{{customer.sex}}" checked>
+                            <label class="form-check-label" for="sex">Femenino</label>
+                        </div>
+                    {% endif %}      
+                    <div id="sex" class="form-text">Selecciona masculino o femenino</div>
+                </div>
+
+                <h5 class="card-title mb-3 text-center">Datos personales</h5>
+                
+                <div class="mb-3">
+                    <label for="mail" class="form-label">Correo</label>
+                    <input type="text" class="form-control" id="mail" name="mail" placeholder="usuario@dominio.com" value="{{customer.mail}}">
+                    <div id="mail" class="form-text">Escribe el correo electr&oacute;nico</div>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Telefono</label>
+                    <input type="text" class="form-control" id="phone" name="phone" maxlength="10" placeholder="000 000 0000" value="{{customer.phone}}">
+                    <div id="phone" class="form-text">Escribe el n&uacute;mero de tel&eacute;fono</div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Modificar
+                    </button>
+                    <button type="reset" class="btn btn-warning">Cancelar</button>
+                </div>
+            </div>
+
+            {{ md.nvForm('Modificar', '¿Quieres modificar los datos?') }}
+
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}

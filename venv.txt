@@ -1,0 +1,9 @@
+virtualenv -p python3 venv
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+
+.\venv\Scripts\Activate
+
+.\src\run.py
+
+deactivate

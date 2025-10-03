@@ -1,0 +1,75 @@
+{% import '_macros_/navbar.html' as nav %}
+
+{% extends '_extends_/layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block header %}
+
+{% set link = url_for('order.get_list') %}
+{{ nav.returnNav(link) }}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <div class="card">
+        <form action="{{url_for('order.post_item')}}" method="POST">
+            <div class="card-header bg-primary">
+                <h5 class="card-title text-white">Insertar registro</h5>
+            </div>
+
+            <div class="card-body bg-primary-subtle">
+
+                <div class="mb-3">
+                    <label for="store" class="form-label"></label>
+                    <select class="form-select" aria-label="Default select example" id="store" name="store">
+                        <option selected>...</option>
+                        {% for store in stores %}
+                            <option value="{{store.code}}">{{store.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="store" class="form-text">Selecciona la tienda donde se realiz&oacute; la venta</div>
+                </div>
+                <div class="mb-3">
+                    <label for="customer" class="form-label"></label>
+                    <select class="form-select" aria-label="Default select example" id="customer" name="customer">
+                        <option selected>...</option>
+                        {% for customer in customers %}
+                            {% set fullname = '{} {}'.format(customer.name, customer.surname) %}
+                            <option value="{{customer.code}}">{{fullname}}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="customer" class="form-text">Selecciona el cliente que realiz&oacute; la compra</div>
+                </div>
+                <div class="mb-3">
+                    <label for="payment" class="form-label">Metodo de pago</label>
+                    <select class="form-select" aria-label="Default select example" id="payment" name="payment">
+                        <option selected>...</option>
+                        {% for pay in pays %}
+                            <option value="{{pay}}">{{pay}}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="payment" class="form-text">Selecciona el metodo de pago que realiz&oacute; la compra</div>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <div class="btn-group" role="group">
+                    <button type="submit" class="btn btn-primary">Insertar</button>
+                    <button type="reset" class="btn btn-warning">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}

@@ -1,0 +1,27 @@
+{% import '_macros_/navbar.html' as nav %}
+
+{% extends '_extends_/layout.html' %}
+
+{% block title %} Error {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block header %}
+
+{% set link = url_for('main.home') %}
+{{ nav.returnNav(link) }}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="p-5">
+    <h1>Error</h1>
+    <h5>Pagina no encontrada</h5>
+</div>
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}

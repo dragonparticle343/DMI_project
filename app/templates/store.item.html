@@ -1,0 +1,75 @@
+{% import '_macros_/navbar.html' as nav %}
+
+{% extends '_extends_/layout.html' %}
+
+{% block title %} {{store.name}} {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block header %}
+
+{% set link = url_for('store.get_list') %}
+{{ nav.returnNav(link) }}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <div class="card">
+
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{store.name}}</div>
+                        Nombre
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        {% set phone = '{}-{}-{}'.format(store.phone[:3],store.phone[3:6],store.phone[6:]) %}
+                        <div class="fw-bold">{{phone}}</div>
+                        N&uacute;mero de tel&eacute;fono
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{store.street.address}}</div>
+                        Dirrecci&oacute;n
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{store.street.postal}}</div>
+                        C&oacute;digo postal
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{store.region.city}}</div>
+                        Ciudad
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{store.region.state}}</div>
+                        Estado o provincia
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{store.region.country}}</div>
+                        Pa&iacute;s
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}

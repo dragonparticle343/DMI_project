@@ -1,0 +1,116 @@
+{% import '_macros_/navbar.html' as nav %}
+{% import '_macros_/modal.html' as md %}
+
+{% extends '_extends_/layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block header %}
+
+{% set link = url_for('order.get_list') %}
+{{ nav.returnNav(link) }}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <div class="card">
+
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">        
+                        <div class="fw-bold">{{order.store}}</div>
+                        Sucursal
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{date}}</div>
+                        Fecha de venta
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        {% set store = '{}, {}'.format(order.street, order.region) %}
+                        <div class="fw-bold">{{store}}</div>
+                        Lugar de venta
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{order.customer}}</div>
+                        Cliente
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">
+                            <table class="table">
+                                <tbody>
+                                    {% for product in order.products %}
+                                        <tr>
+                                            {% set ed = product.code %}
+                                            <td>{{product.name}}</td>
+                                            {% set price = '...$ {:0,.2f}'.format(product.price) %}
+                                            <td>{{price}}</td>
+                                            {% set units = '{} unidades'.format(product.units) %}
+                                            <td>{{units}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        Productos
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{order.quantity}}</div>
+                        Unidades vendidas
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        {% set total = '$ {:0,.2f}'.format(order.total) %}
+                        <div class="fw-bold">{{total}}</div>
+                        Total a pagar
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        {% set pay = '$ {:0,.2f}'.format(order.pay) %}
+                        <div class="fw-bold">{{pay}}</div>
+                        Pago recibido
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        {% set change = '$ {:0,.2f}'.format(order.change) %}
+                        <div class="fw-bold">{{change}}</div>
+                        Cambio enviado
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="card-footer">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Eliminar
+            </button>
+        </div>
+    </div>
+</div>
+
+{% set onclick = url_for('order.delete_item', id = order.code) %}
+{{ md.nvButton('Eliminar', '¿Quieres eliminar el cliente?', onclick) }}
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}

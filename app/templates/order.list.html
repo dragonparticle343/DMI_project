@@ -1,0 +1,55 @@
+{% extends '_extends_/layout.html' %}
+{% import '_macros_/modal.html' as md %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block header %} {% include './_includes_/header.html' %} {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <div class="card">
+
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Limpiar
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            {% set date = '{}'.format(order.date[:10]) %}
+                            <td>{{date}}</td>
+                            <td>{{order.quantity}}</td>
+                            {% set total = '$ {:0,.2f}'.format(order.total) %}
+                            <td>{{total}}</td>
+                            <td>
+                                <a href="{{url_for('order.get_item', id=order.code)}}" class="btn btn-secondary">Leer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% set onclick = url_for('order.delete_list') %}
+{{ md.nvButton('Eliminar', '¿Quieres eliminar el cliente?', onclick) }}
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}

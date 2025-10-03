@@ -1,0 +1,55 @@
+{% extends '_extends_/layout.html' %}
+{% import '_macros_/modal.html' as md %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block header %} {% include '_includes_/header.html' %} {% endblock %}
+
+{% block link %}{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <div class="card">
+
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre completo</th>
+                        <th scope="col">Fecha de nacimiento</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Limpiar
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for customer in customers %}
+                        <tr>
+                            {% set fullname = '{} {}'.format(customer.name, customer.surname) %}
+                            <td>{{fullname}}</td>
+                            {% set birth = '{}/{}/{}'.format(customer.birth[8:10],customer.birth[5:7],customer.birth[:4]) %}
+                            <td>{{birth}}</td>
+                            <td>{{customer.sex}}</td>
+                            <td>
+                                <a href="{{url_for('customer.get_item', id=customer.code)}}" class="btn btn-secondary">Leer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% set onclick = url_for('customer.delete_list') %}
+{{ md.nvButton('Eliminar', '¿Quieres eliminar todo?', onclick) }}
+
+{% endblock %}
+
+{% block footer %} {% include './_includes_/footer.html' %} {% endblock %}
+
+{% block script %}{% endblock %}
